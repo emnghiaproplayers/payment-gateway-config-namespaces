@@ -24,7 +24,7 @@ export class PaymentGatewayController {
       dbPort: this.configService.get('database.port', { infer: true }),
       dbName: this.configService.get('database.name', { infer: true }),
       paymentProvider: this.configService.get('payment.provider', { infer: true }),
-      paymentApiKey: apiKey,
+      paymentApiKey: apiKey ? apiKey.substring(0, 6) + '...' : undefined,
       paymentTimeout: this.configService.get('payment.timeoutMs', { infer: true }),
       appVersion,
     };

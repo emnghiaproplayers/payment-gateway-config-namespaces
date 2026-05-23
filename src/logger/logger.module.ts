@@ -5,6 +5,22 @@ import * as winston from 'winston';
 import * as os from 'os';
 import { AllConfig } from '../config/namespace.type';
 
+const sanitizeFormat = winston.format((info) => {
+  const sensitiveKeys = ['apikey', 'password', 'secret', 'token'];
+  const mask = (obj: any) => {
+    if (!obj || typeof obj !== 'object') return;
+    for (const key of Object.keys(obj)) {
+      if (sensitiveKeys.some((s) => key.toLowerCase().includes(s))) {
+        obj[key] = '***MASKED***';
+      } else if (typeof obj[key] === 'object') {
+        mask(obj[key]);
+      }
+    }
+  };
+  mask(info);
+  return info;
+});
+
 @Global()
 @Module({
   imports: [
@@ -24,6 +40,7 @@ import { AllConfig } from '../config/namespace.type';
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.errors({ stack: true }),
+            sanitizeFormat(),
             winston.format.json(),
           ),
           transports: [
