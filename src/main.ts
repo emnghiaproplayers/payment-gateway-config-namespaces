@@ -6,7 +6,7 @@ import { AllConfig } from './config/namespace.type';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create(AppModule, { logger: false });
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   
   const configService = app.get<ConfigService<AllConfig>>(ConfigService);

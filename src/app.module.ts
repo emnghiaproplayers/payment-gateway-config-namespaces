@@ -14,11 +14,10 @@ import { LoggerModule } from './logger/logger.module';
     PaymentGatewayModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [`.env.${process.env.NODE_ENV}`],
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env.development'],
       load: [appConfig, databaseConfig, paymentConfig],
       validationSchema,
       validationOptions: { abortEarly: true, allowUnknown: false },
-      ignoreEnvVars: true,
     }),
     LoggerModule,
   ],
